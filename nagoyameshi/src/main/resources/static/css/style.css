@@ -125,6 +125,20 @@ footer {
     max-width: 300px;
 }
 
+.nagoyameshi-star {
+    color: #ffa500;
+} 
+
+.nagoyameshi-star:focus {
+    color: #ffa500;
+}
+
+.nagoyameshi-favorite-card-image {
+  width: 100%;
+  height: 150px; 
+  object-fit: cover;
+}
+
 @media screen and (min-width: 1400px) {
  .nagoyameshi-container {
    max-width: 1200px;

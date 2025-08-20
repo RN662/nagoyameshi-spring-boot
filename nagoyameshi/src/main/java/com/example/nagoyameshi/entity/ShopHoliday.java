@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -21,12 +21,30 @@ public class ShopHoliday {
 	@Column(name = "id")
 	private Integer id;
 	
-	@ManyToOne
-	@JoinColumn(name = "shop_id")
+	@OneToOne
+	@JoinColumn(name = "shop_id", unique = true)
 	private Shop shop;
 	
-	@Column(name = "day_of_week")
-	private String dayOfWeek;
+	@Column(name = "monday")
+	private boolean monday;
+	
+	@Column(name = "tuesday")
+	private boolean tuesday;
+	
+	@Column(name = "wednesday")
+	private boolean wednesday;
+	
+	@Column(name = "thursday")
+	private boolean thursday;
+	
+	@Column(name = "friday")
+	private boolean friday;
+	
+	@Column(name = "saturday")
+	private boolean saturday;
+	
+	@Column(name = "sunday")
+	private boolean sunday;
 
 	@Column(name = "created_at", insertable = false, updatable = false)
 	private Timestamp createdAt;

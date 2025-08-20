@@ -1,7 +1,5 @@
 package com.example.nagoyameshi.form;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.Min;
@@ -43,7 +41,13 @@ public class ShopEditForm {
 	private String closingTime;
 	
 	// 定休日（バリデーションチェックなし）
-	private List<String> shopHolidays;
+    private boolean monday;
+    private boolean tuesday;
+    private boolean wednesday;
+    private boolean thursday;
+    private boolean friday;
+    private boolean saturday;
+    private boolean sunday;
 	
 	@NotBlank(message = "郵便番号を入力してください。")
 	private String postalCode;

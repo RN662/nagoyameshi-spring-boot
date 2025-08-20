@@ -66,17 +66,12 @@ public class AdminShopController {
 	public String show(@PathVariable(name = "id") Integer id, Model model) {
 		Shop shop = shopRepository.getReferenceById(id);
 
-		List<ShopHoliday> holidays = shopHolidayRepository.findByShop(shop);
+		ShopHoliday holiday = shopHolidayRepository.findByShop(shop);
 
 		model.addAttribute("shop", shop);
-		model.addAttribute("holidays", holidays);
+		model.addAttribute("holiday", holiday);
 
 		return "admin/shops/show";
-	}
-
-	@ModelAttribute("dayOfWeekList")
-	public List<String> dayOfWeekList() {
-		return List.of("月", "火", "水", "木", "金", "土", "日");
 	}
 
 	@GetMapping("/register")
@@ -148,10 +143,13 @@ public class AdminShopController {
 
 	@PostMapping("/{id}/delete")
 	public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
-		shopRepository.deleteById(id);
-
-		redirectAttributes.addFlashAttribute("successMessage", "店舗を削除しました。");
-
+		try {
+			shopService.delete(id);
+			redirectAttributes.addFlashAttribute("successMessage", "店舗を削除しました。");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "削除に失敗しました。");
+		}
+			
 		return "redirect:/admin/shops";
 	}
 }

@@ -36,6 +36,10 @@
 								<span th:text="${successMessage}"></span>
 							</div>
 							
+							<div th:if="${errorMessage}" class="alert alert-danger">
+								<span th:text="${errorMessage}"></span>
+							</div>
+							
 							<table class="table">
 								<thead>
 									<tr>

@@ -119,14 +119,36 @@
 								
 								<div class="form-group row mb-3">
 									<div class="col-md-4">
-										<label for="shopHolidays" class="col-form-label text-md-left fw-bold">定休日</label>
+										<label for="shopHoliday" class="col-form-label text-md-left fw-bold">定休日</label>
 									</div>
 									<div class="col-md-8">
-										<div th:if="${#fields.hasErrors('shopHolidays')}" class="text-danger small mb-2" th:errors="*{shopHolidays}"></div>
-										
-										<div class="form-check form-check-inline me-3" th:each="day : ${dayOfWeekList}">
-										    <input type="checkbox" class="form-check-input" th:field="*{shopHolidays}" th:value="${day}" th:id="${'holiday-' + day}">
-										    <label class="form-check-label" th:for="${'holiday-' + day}" th:text="${day}"></label>
+										<div class="form-check form-check-inline me-3">
+										    <input type="checkbox" class="form-check-input" th:field="*{monday}" id="holiday-monday">
+										    <label class="form-check-label" for="holiday-monday">月</label>
+										</div>
+										<div class="form-check form-check-inline me-3">
+										    <input type="checkbox" class="form-check-input" th:field="*{tuesday}" id="holiday-tuesday">
+										    <label class="form-check-label" for="holiday-tuesday">火</label>
+										</div>
+										<div class="form-check form-check-inline me-3">
+										    <input type="checkbox" class="form-check-input" th:field="*{wednesday}" id="holiday-wednesday">
+										    <label class="form-check-label" for="holiday-wednesday">水</label>
+										</div>
+										<div class="form-check form-check-inline me-3">
+										    <input type="checkbox" class="form-check-input" th:field="*{thursday}" id="holiday-thursday">
+										    <label class="form-check-label" for="holiday-thursday">木</label>
+										</div>
+										<div class="form-check form-check-inline me-3">
+										    <input type="checkbox" class="form-check-input" th:field="*{friday}" id="holiday-friday">
+										    <label class="form-check-label" for="holiday-friday">金</label>
+										</div>
+										<div class="form-check form-check-inline me-3">
+										    <input type="checkbox" class="form-check-input" th:field="*{saturday}" id="holiday-saturday">
+										    <label class="form-check-label" for="holiday-saturday">土</label>
+										</div>
+										<div class="form-check form-check-inline me-3">
+										    <input type="checkbox" class="form-check-input" th:field="*{sunday}" id="holiday-sunday">
+										    <label class="form-check-label" for="holiday-sunday">日</label>
 										</div>
 									</div>
 								</div>

@@ -123,9 +123,18 @@
 										<span class="fw-bold">定休日</span>
 									</div>
 									
-									<div class="col">
-										<span th:if="${#lists.isEmpty(holidays)}">なし</span>
-										<span th:each="holiday : ${holidays}" th:text="${holiday.dayOfWeek} + ' '"></span>
+									<div class="col">							
+										<div th:if="${holiday != null and (holiday.monday or holiday.tuesday or holiday.wednesday or holiday.thursday or holiday.friday or holiday.saturday or holiday.sunday)}">
+											<span th:if="${holiday.monday}">月 </span>
+											<span th:if="${holiday.tuesday}">火 </span>
+											<span th:if="${holiday.wednesday}">水 </span>
+											<span th:if="${holiday.thursday}">木 </span>
+											<span th:if="${holiday.friday}">金 </span>
+											<span th:if="${holiday.saturday}">土 </span>
+											<span th:if="${holiday.sunday}">日 </span>
+										</div>
+										
+										<span th:unless="${holiday != null and (holiday.monday or holiday.tuesday or holiday.wednesday or holiday.thursday or holiday.friday or holiday.saturday or holiday.sunday)}">なし</span>
 									</div>
 								</div>
 								

@@ -93,10 +93,13 @@ public class AdminCategoryController {
 	
 	@PostMapping("/{id}/delete")
 	public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
-		categoryRepository.deleteById(id);
-		
-		redirectAttributes.addFlashAttribute("successMessage", "カテゴリを削除しました。");
-		
+		try {
+			categoryService.delete(id);
+			redirectAttributes.addFlashAttribute("successMessage", "カテゴリを削除しました。");			
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "削除に失敗しました。");
+		}
+
 		return "redirect:/admin/categories";
 	}
 }

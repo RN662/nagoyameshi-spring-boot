@@ -85,6 +85,17 @@
 							<div class="d-flex justify-content-between flex-wrap">
 								<p th:if="${shopPage.getTotalPages() > 1}" class="fs-5 mb-3" th:text="${shopPage.getTotalElements() + '件の店舗が見つかりました' + '（' + (shopPage.getNumber() + 1) + ' / ' + shopPage.getTotalPages() + ' ページ）'}"></p>
 								<p th:unless="${shopPage.getTotalPages() > 1}" class="fs-5 mb-3" th:text="${shopPage.getTotalElements() + '件の店舗が見つかりました'}"></p> 
+								
+								<form method="get" th:action="@{/shops}" class="mb-3 nagoyameshi-sort-box">
+									<input th:if="${keyword}" type="hidden" name="keyword" th:value="${keyword}">
+									<input th:if="${categoryName}" type="hidden" name="categoryName" th:value="${categoryName}">
+									<input th:if="${price}" type="hidden" name="price" th:value="${price}"> 
+									<select class="form-select form-select-sm" name="order" onChange="this.form.submit();">
+										<option value="createdAtDesc" th:selected="${order == 'createdAtDesc' || order == null}">掲載日が新しい順</option>
+										<option value="priceAsc" th:selected="${order == 'priceAsc'}">価格が安い順</option>
+										<option value="priceDesc" th:selected="${order == 'priceDesc'}">価格が高い順</option>
+									</select>
+								</form>
 							</div>
 							
 							<div class="mb-3" th:each="shop : ${shopPage}">
@@ -126,15 +137,15 @@
 									<ul class="pagination">
 										<li class="page-item">
 											<span th:if="${shopPage.isFirst()}" class="page-link disabled">前</span>
-											<a th:unless="${shopPage.isFirst()}" th:href="@{/shops(page = ${shopPage.getNumber() - 1}, keyword = ${keyword}, categoryName = ${categoryName}, price = ${price})}" class="page-link nagoyameshi-page-link">前</a>
+											<a th:unless="${shopPage.isFirst()}" th:href="@{/shops(page = ${shopPage.getNumber() - 1}, keyword = ${keyword}, categoryName = ${categoryName}, price = ${price}, order = ${order})}" class="page-link nagoyameshi-page-link">前</a>
 										</li>
 										<li th:each="i : ${#numbers.sequence(0, shopPage.getTotalPages() - 1)}" class="page-item">
 											<span th:if="${i == shopPage.getNumber()}" class="page-link active nagoyameshi-active" th:text="${i + 1}"></span>
-											<a th:unless="${i == shopPage.getNumber()}" th:href="@{/shops(page = ${i}, keyword = ${keyword}, categoryName = ${categoryName}, price = ${price})}" class="page-link nagoyameshi-page-link" th:text="${i + 1}"></a>
+											<a th:unless="${i == shopPage.getNumber()}" th:href="@{/shops(page = ${i}, keyword = ${keyword}, categoryName = ${categoryName}, price = ${price}, order = ${order})}" class="page-link nagoyameshi-page-link" th:text="${i + 1}"></a>
 										</li>
 										<li class="page-item">
 											<span th:if="${shopPage.isLast()}" class="page-link disabled">次</span>
-											<a th:unless="${shopPage.isLast()}" th:href="@{/shops(page = ${shopPage.getNumber() + 1}, keyword = ${keyword}, categoryName = ${categoryName}, price = ${price})}" class="page-link nagoyameshi-page-link">次</a>
+											<a th:unless="${shopPage.isLast()}" th:href="@{/shops(page = ${shopPage.getNumber() + 1}, keyword = ${keyword}, categoryName = ${categoryName}, price = ${price}, order = ${order})}" class="page-link nagoyameshi-page-link">次</a>
 										</li>
 									</ul>
 								</nav>
