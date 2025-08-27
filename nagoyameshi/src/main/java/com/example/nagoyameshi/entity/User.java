@@ -49,8 +49,11 @@ public class User {
     @Column(name = "enabled")
     private Boolean enabled;
     
-    @Column(name = "paid_member")
-    private Boolean paidMember;
+    @Column(name = "is_paid")
+    private Boolean isPaid = false;
+    
+    @Column(name = "stripe_customer_id")
+    private String stripeCustomerId;
     
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;

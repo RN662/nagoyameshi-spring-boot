@@ -44,7 +44,7 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
 		user.setRole(role);
 		user.setEnabled(false);
-		user.setPaidMember(false);
+		user.setIsPaid(false);
 		
 		return userRepository.save(user);
 	}
@@ -60,6 +60,12 @@ public class UserService {
 		user.setPhoneNumber(userEditForm.getPhoneNumber());
 		user.setEmail(userEditForm.getEmail());
 		
+		userRepository.save(user);
+	}
+	
+	@Transactional
+	public void updatePaidMemberStatus(User user, Boolean isPaid) {
+		user.setIsPaid(isPaid);
 		userRepository.save(user);
 	}
 	
@@ -86,5 +92,14 @@ public class UserService {
 		User currentUser = userRepository.getReferenceById(userEditForm.getId());
 		return !userEditForm.getEmail().equals(currentUser.getEmail());
 	}
-
+	
+	public User findByEmail(String email) {
+	    return userRepository.findByEmail(email);
+	}
+	
+	// パスワード更新
+	public void updatePassword(User user, String newPassword) {
+		user.setPassword(passwordEncoder.encode(newPassword));
+		userRepository.save(user);
+	}
 }

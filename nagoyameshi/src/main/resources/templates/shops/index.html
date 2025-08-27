@@ -117,6 +117,21 @@
 													
 													<hr class="mb-3">
 													
+																										
+													<div class="star-rating mb-2 text-start" th:with="averageScore=${averageScores[shop.id]}, reviewCount=${totalReviewCounts[shop.id]}">
+								                        <span th:each="i : ${#numbers.sequence(1, 5)}">
+									                        <span th:if="${i <= averageScore}" class="star star-filled">&#9733;</span>
+									                        <span th:if="${i > averageScore and i - 0.5 <= averageScore}" class="star star-half">&#9733;</span>
+									                        <span th:if="${i - 0.5 > averageScore}" class="star star-empty">&#9734;</span>
+								                        </span>
+								
+								                        <span class="ms-2">
+									                        <span th:text="${#numbers.formatDecimal(averageScore, 1, 2)}">0.00</span>
+									                        (<span th:text="${reviewCount}">0</span>件)
+								                        </span>
+							                        </div>
+
+													
 													<p class="card-text mb-2">
 														<span th:text="${#numbers.formatInteger(shop.getLowestPrice(), 1, 'COMMA') + '円～' + #numbers.formatInteger(shop.getHighestPrice(), 1, 'COMMA') + '円'}"></span>
 													</p>

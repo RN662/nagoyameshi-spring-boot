@@ -51,12 +51,15 @@ public class ReviewController {
 	
 	@GetMapping("/register")
 	public String register(@PathVariable(name = "shopId") Integer shopId, Model model) {
-		Shop shop = shopRepository.getReferenceById(shopId);
-		
-		model.addAttribute("shop", shop);
-		model.addAttribute("reviewRegisterForm", new ReviewRegisterForm());
-		
-		return "reviews/register";
+	    Shop shop = shopRepository.getReferenceById(shopId);
+	    
+	    ReviewRegisterForm reviewRegisterForm = new ReviewRegisterForm();
+	    reviewRegisterForm.setScore(null);
+	    
+	    model.addAttribute("shop", shop);
+	    model.addAttribute("reviewRegisterForm", reviewRegisterForm);
+	    
+	    return "reviews/register";
 	}
 	
 	@PostMapping("/create")

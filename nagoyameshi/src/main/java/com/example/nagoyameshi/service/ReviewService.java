@@ -85,5 +85,10 @@ public class ReviewService {
 		return Math.round(average * 10.0) / 10.0;
 	}
 	
+	// レビュー数を取得
+	public long getReviewCountByShop(Shop shop) {
+		return reviewRepository.countByShop(shop);
+	}
+	
 
 }

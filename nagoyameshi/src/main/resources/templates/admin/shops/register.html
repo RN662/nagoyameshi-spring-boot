@@ -16,9 +16,10 @@
 			<main>
 				<div class="container pt-4 pb-5 nagoyameshi-container">
 					<div class="row justify-content-center">
-						<div class="col-xl-5 col-lg-6 col-md-8">
+						<div class="col-xl-7 col-lg-8 col-md-9">
 							<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 								<ol class="breadcrumb mb-0">
+									<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
 									<li class="breadcrumb-item"><a th:href="@{/admin/shops}">店舗一覧</a></li>
 									<li class="breadcrumb-item active" aria-current="page">店舗登録</li>
 								</ol>
@@ -151,11 +152,11 @@
 								
 								<div class="form-group row mb-3">
 									<div class="col-md-4">
-										<label for="postalCode" class="col-form-label text-md-left fw-bold">郵便番号</label>
+										<label for="postalCode" class="col-form-label text-md-left fw-bold">郵便番号（半角）</label>
 									</div>
 									<div class="col-md-8">
 										<div th:if="${#fields.hasErrors('postalCode')}" class="text-danger small mb-2" th:errors="*{postalCode}"></div>
-										<input type="text" class="form-control" th:field="*{postalCode}">
+										<input type="text" class="form-control" th:field="*{postalCode}" inputmode="numeric" pattern="^[0-9]{3}-[0-9]{4}$" placeholder="半角で 123-4567 の形式で入力してください">
 									</div>
 								</div>
 								
@@ -171,11 +172,11 @@
 								
 								<div class="form-group row mb-3">
 									<div class="col-md-4">
-										<label for="phoneNumber" class="col-form-label text-md-left fw-bold">電話番号</label>
+										<label for="phoneNumber" class="col-form-label text-md-left fw-bold">電話番号（半角）</label>
 									</div>
 									<div class="col-md-8">
 										<div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger small mb-2" th:errors="*{phoneNumber}"></div>
-										<input type="text" class="form-control" th:field="*{phoneNumber}">
+										<input type="tel" class="form-control" th:field="*{phoneNumber}" inputmode="tel" pattern="^[0-9]{2,4}-[0-9]{2,4}-[0-9]{3,4}$" placeholder="半角ハイフン区切り（例 052-250-1001）で入力してください">
 									</div>
 								</div>
 								

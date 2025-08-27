@@ -1,6 +1,8 @@
 package com.example.nagoyameshi.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -105,15 +107,28 @@ public class ShopController {
 				shopPage = shopRepository.findAllByOrderByCreatedAtDesc(pageable);
 			}
 		}
-
+		
+		// 評価★用のデータ
+		Map<Integer, Double> averageScores = new HashMap<>();
+		Map<Integer, Long> totalReviewCounts = new HashMap<>();
+		
+		for (Shop shop : shopPage.getContent()) {
+			double averageScore = reviewService.getAverageScore(shop);
+			long totalReviewCount = reviewService.getReviewCountByShop(shop);
+			
+			averageScores.put(shop.getId(), averageScore);
+			totalReviewCounts.put(shop.getId(), totalReviewCount);
+		}
+		
 		List<Category> categories = categoryRepository.findAll();
 		model.addAttribute("categories", categories);
-
 		model.addAttribute("shopPage", shopPage);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("categoryName", categoryName);
 		model.addAttribute("price", price);
 		model.addAttribute("order", order);
+		model.addAttribute("averageScores", averageScores);
+		model.addAttribute("totalReviewCounts", totalReviewCounts);
 
 		return "shops/index";
 	}
@@ -138,22 +153,22 @@ public class ShopController {
 		}
 
 		List<Review> newReviews = reviewRepository.findTop4ByShopOrderByCreatedAtDesc(shop);
-		long totalReviewCount = reviewRepository.countByShop(shop);
 		double averageScore = reviewService.getAverageScore(shop);
+		long totalReviewCount = reviewService.getReviewCountByShop(shop);
 
 		// 予約フォーム用のデータを追加
 		List<Integer> holidays = reservationService.getHolidayDays(shop);
 		List<String> timeSlots = reservationService.generateTimeSlots(shop);
 
-				model.addAttribute("shop", shop);
+		model.addAttribute("shop", shop);
 		model.addAttribute("holiday", holiday);
 		model.addAttribute("reservationInputForm", new ReservationInputForm());
 		model.addAttribute("favorite", favorite);
+		model.addAttribute("isFavorite", isFavorite);
 		model.addAttribute("hasUserAlreadyReviewed", hasUserAlreadyReviewed);
 		model.addAttribute("newReviews", newReviews);
-		model.addAttribute("totalReviewCount", totalReviewCount);
-		model.addAttribute("isFavorite", isFavorite);
 		model.addAttribute("averageScore", averageScore);
+		model.addAttribute("totalReviewCount", totalReviewCount);
 	    model.addAttribute("holidays", holidays);
 	    model.addAttribute("timeSlots", timeSlots);
 

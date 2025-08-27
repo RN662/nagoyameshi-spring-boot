@@ -14,10 +14,10 @@
 			<div th:replace="~{fragment :: header}"></div>
 			
 			<main>
-				<div class="container pb-5 nagoyameshi-container">
+				<div class="container pt-4 pb-5 nagoyameshi-container">
 					<div class="row justify-content-center">
 						<div class="col-xxl-6 col-xl-7 col-lg-8">
-							<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 								<ol class="breadcrumb mb-0">
 									<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
 									<li class="breadcrumb-item active" aria-current="page">予約一覧</li>
@@ -43,20 +43,22 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th scope="col">店舗名</th>
 										<th scope="col">予約日時</th>
+										<th scope="col">店舗名</th>
 										<th scope="col">人数</th>
 										<th scope="col"></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:each="reservation : ${reservationPage}">
+										<td th:text="${#temporals.format(reservation.getReservedAt(), 'yyyy年M月d日 HH時mm分')}"></td>
 										<td>
 											<a th:href="@{/shops/__${reservation.getShop().getId()}__}" th:text="${reservation.getShop().getName()}"></a>
 										</td>
-										<td th:text="${#temporals.format(reservation.getReservedAt(), 'yyyy年M月d日 HH時mm分')}"></td>
 										<td th:text="${reservation.getNumberOfPeople + '名'}"></td>
 										<td>
+											<span th:if="${reservation.reservedAt.toLocalDate().isBefore(today)}" class="text-muted">来店済み</span>
+
 											<a th:if="${reservation.reservedAt.toLocalDate().isAfter(today)}"
 											   href="#" class="nagoyameshi-link-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteReservationModal' + reservation.getId()}">キャンセル</a>
 										</td>

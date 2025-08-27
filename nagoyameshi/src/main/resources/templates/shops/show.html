@@ -30,7 +30,7 @@
 							    </nav>
 							    
 							    <!-- お気に入りセクション -->
-							    <div sec:authorize="isAuthenticated()">
+							    <div sec:authorize="isAuthenticated()" th:if="${currentUser.isPaid}">
 									<div th:if="${isFavorite}">
 										<a href="#" onclick="event.preventDefault(); document.getElementById('favorite-form').submit();">&#9829; お気に入り解除</a>
 										<form method="post" th:action="@{/shops/__${shop.getId()}__/favorites/delete}" id="favorite-form" class="d-none"></form>
@@ -42,7 +42,23 @@
 								</div>
 							</div>
 							
-							<h1 class="mb-4 text-center" th:text="${shop.getName()}"></h1>
+							<h1 class="mb-2 text-center" th:text="${shop.getName()}"></h1>
+							
+							<!-- 評価の★ -->
+							<div class="star-rating mb-4 justify-content-center">
+								<span th:each="i : ${#numbers.sequence(1, 5)}">
+									<span th:if="${i <= averageScore}" class="star star-filled">&#9733;</span>
+									<span th:if="${i > averageScore and i - 0.5 <= averageScore}" class="star star-half">&#9733;</span>
+									<span th:if="${i - 0.5 > averageScore}" class="star star-empty">&#9734;</span>
+								</span>
+								
+								<span class="ms-2">
+									<span th:text="${#numbers.formatDecimal(averageScore, 1, 2)}">0.00</span>
+									<a th:href="@{/shops/__${shop.id}__/reviews}" class="review-count-link">
+									(<span th:text="${totalReviewCount}">0</span>件)
+									</a>
+								</span>
+							</div>
 							
 							<!-- リダイレクトメッセージ -->
 							<div th:if="${successMessage}" class="alert alert-info">
@@ -171,18 +187,27 @@
 											</div>
 										</div>
 									</div>
-										
+									
+									<!-- 予約フォーム -->	
 									<div sec:authorize="isAnonymous()" class="col-lg-4 px-0 ps-lg-4 mb-4">
 										<div class="card">
 											<div class="card-body">
-												<p class="card-text">予約するには<a th:href="@{/login}">ログイン</a>が必要です。</p>
+												<p class="card-text">予約するには<a th:href="@{/login}">ログイン</a>後、有料プラン登録が必要です。</p>
 												<button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>予約する</button>
 											</div>
 										</div>
 									</div>
 									
-									<!-- 予約フォーム -->
-									<div sec:authorize="isAuthenticated()" class="col-lg-4 px-0 ps-lg-4 mb-4">
+									<div sec:authorize="isAuthenticated()" th:if="${!currentUser.isPaid}" class="col-lg-4 px-0 ps-lg-4 mb-4">
+										<div class="card">
+											<div class="card-body">
+												<p class="card-text">予約するには<a th:href="@{/subscription/register}">有料プラン登録</a>が必要です。</p>
+												<button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>予約する</button>
+											</div>
+										</div>
+									</div>
+									
+									<div sec:authorize="isAuthenticated()" th:if="${currentUser.isPaid}" class="col-lg-4 px-0 ps-lg-4 mb-4">
 										<div class="card">
 											<div class="card-body">
 												<form method="get" th:action="@{/shops/__${shop.getId()}__/reservations/input}" th:object="${reservationInputForm}">
@@ -228,7 +253,7 @@
 							<!-- レビューセクション -->
 							<div class="container px-0">
 								<h2 class="mb-4 text-center">レビュー</h2>
-								<div sec:authorize="isAuthenticated()" th:unless="${hasUserAlreadyReviewed}" class="row justify-content-center mb-4">
+								<div sec:authorize="isAuthenticated()" th:if="${currentUser.isPaid}" th:unless="${hasUserAlreadyReviewed}" class="row justify-content-center mb-4">
 									<div class="col-lg-4">
 										<a th:href="@{/shops/__${shop.getId()}__/reviews/register}" class="btn text-white shadow-sm w-100 nagoyameshi-btn">レビューを投稿する</a>
 									</div>

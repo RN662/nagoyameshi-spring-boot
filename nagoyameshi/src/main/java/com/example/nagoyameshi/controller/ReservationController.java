@@ -63,10 +63,10 @@ public class ReservationController {
 
 	@GetMapping("/reservations")
 	public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable pageable,
+			@PageableDefault(page = 0, size = 20, sort = "id", direction = Direction.DESC) Pageable pageable,
 			Model model) {
 		User user = userDetailsImpl.getUser();
-		Page<Reservation> reservationPage = reservationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
+		Page<Reservation> reservationPage = reservationRepository.findByUserOrderByReservedAtDesc(user, pageable);
 
 		LocalDate today = LocalDate.now();
 

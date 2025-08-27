@@ -50,15 +50,35 @@
 						</li>
 						
 						<!-- ログイン済みであれば表示する --> 
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_GENERAL')">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_GENERAL')" th:if="${currentUser != null}">
 							<a id="navbarDropdownGeneral" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-								<span sec:authentication="principal.user.name"></span>
+								<span th:text="${currentUser.name}"></span>
 							</a>
 							
 							<div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownGeneral">
 								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/user}">会員情報</a>
-								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/reservations}">予約一覧</a>
-								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/favorites}">お気に入り一覧</a>
+								
+								<!-- 無料ユーザー -->
+								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/subscription/register}" th:if="${!currentUser.isPaid}">
+									有料プラン登録
+								</a>
+								
+								<!-- 有料ユーザー -->
+								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/reservations}" th:if="${currentUser.isPaid}">
+									予約一覧
+								</a>
+								
+								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/favorites}" th:if="${currentUser.isPaid}">
+									お気に入り一覧
+								</a>
+								
+								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/subscription/cancel}" th:if="${currentUser.isPaid}">
+									有料プラン解約
+								</a>
+								
+								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/payment-method/edit}" target="_blank" rel="noopener" th:if="${currentUser.isPaid}">
+									お支払い方法
+								</a>
 								
 								<div class="dropdown-divider"></div>
 								
@@ -97,11 +117,17 @@
 	<!-- フッターの部品化 -->
 	<div th:fragment="footer" th:remove="tag">
 		<footer>
-			<div class="d-flex flex-column justify-content-center align-items-center h-100 py-4">
+			<div class="d-flex flex-column justify-content-center align-items-center h-100 py-5">
 				<a th:href="@{/}">
-					<img class="nagoyameshi-logo my-3" th:src="@{/images/logo.png}" alt="NAGOYAMESHI">
+					<img class="nagoyameshi-logo my-4" th:src="@{/images/logo.png}" alt="NAGOYAMESHI">
 				</a>
-				<p class="text-center text-muted small mb-3">&copy; NAGOYAMESHI All rights reserved.</p>
+				
+				<div class="d-flex gap-3 mb-4">
+					<a class="link-secondary text-decoration-none" th:href="@{/company}">会社概要</a>
+					<a class="link-secondary text-decoration-none" th:href="@{/terms-of-service}">利用規約</a>
+				</div>
+				
+				<p class="text-center text-muted small mb-4">&copy; NAGOYAMESHI All rights reserved.</p>
 			</div>
 		</footer>
 	</div>
